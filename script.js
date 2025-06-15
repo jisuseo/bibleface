@@ -138,20 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 초기화 버튼 연결
-  const resetBtn = document.createElement("button");
-  resetBtn.innerText = "🔄 초기화";
-  resetBtn.style.marginTop = "10px";
-  resetBtn.style.padding = "8px 16px";
-  resetBtn.style.backgroundColor = "#f44336";
-  resetBtn.style.color = "white";
-  resetBtn.style.border = "none";
-  resetBtn.style.borderRadius = "8px";
-  resetBtn.style.cursor = "pointer";
-  resetBtn.onclick = resetImage;
-
-  document.body.insertBefore(resetBtn, document.getElementById("disqus_thread"));
-});
 
 function hideDropZone() {
   const dropZone = document.getElementById("dropZone");
