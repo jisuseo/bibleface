@@ -68,10 +68,16 @@ async function predict(image) {
   prediction.sort((a, b) => b.probability - a.probability);
   const top = prediction[0];
 
-  document.getElementById("result").innerText =
-    `👤 성경인물: ${top.className}\n✅ 닮은정도: ${(top.probability * 100).toFixed(2)}%`;
+  const name = top.className;
+  const percent = (top.probability * 100).toFixed(1) + "%";
+  const description = classDescriptions[name] || "설명 없음";
+  const category = classToCategoryMap[name];
+  const verse = getRandomVerse(category);
 
-  showResult(top.className);
+  document.getElementById("resultName").innerText = name;
+  document.getElementById("resultDesc").innerText = description;
+  document.getElementById("resultPercent").innerText = "닮은 확률: " + percent;
+  document.getElementById("verse").innerText = verse;
 }
 
 // 말씀 출력
@@ -80,16 +86,6 @@ function getRandomVerse(category) {
   if (!verses || verses.length === 0) return "해당 범주의 말씀 없습니다다";
   const randomIndex = Math.floor(Math.random() * verses.length);
   return verses[randomIndex].text;
-}
-
-function showResult(predictedClassName) {
-  const category = classToCategoryMap[predictedClassName];
-  if (!category) {
-    document.getElementById("verse").innerText = "❌ 범주 매핑 없음";
-    return;
-  }
-  const verseText = getRandomVerse(category);
-  document.getElementById("verse").innerText = verseText;
 }
 
 // 초기 로딩 이벤트
