@@ -15,26 +15,29 @@ const classToCategoryMap = {
   "다니엘": "감사/기쁨", "에스더": "감사/기쁨"
 };
 
-function getRandomVerse(category) {
-  const verses = versesByCategory[category];
-  if (!verses || verses.length === 0) return "해당 범주의 말씀 없음";
-  const randomIndex = Math.floor(Math.random() * verses.length);
-  return verses[randomIndex].text;
-}
+// 모델 초기화
+async function init() {
+  const modelURL = TM_MODEL_URL + "model.json";
+  const metadataURL = TM_MODEL_URL + "metadata.json";
 
-function showResult(predictedClassName) {
-  const category = classToCategoryMap[predictedClassName];
-  const verseEl = document.getElementById("verse");
+  model = await tmImage.load(modelURL, metadataURL);
+  maxPredictions = model.getTotalClasses();
 
-  if (!category) {
-    if (verseEl) verseEl.innerText = "❌ 범주 매핑 없음";
-    return;
+  console.log("✅ 모델 로딩 완료. 총 클래스 수:", maxPredictions);
+
+  // localStorage에 저장된 이미지 불러오기
+  const savedImage = localStorage.getItem("uploadedImage");
+  if (savedImage) {
+    const imageElement = document.getElementById("preview");
+    imageElement.onload = async function () {
+      hideDropZone();
+      await predict(imageElement);
+    };
+    imageElement.src = savedImage;
   }
-
-  const verseText = getRandomVerse(category);
-  if (verseEl) verseEl.innerText = verseText;
 }
 
+// 이미지 예측
 async function predict(image) {
   const prediction = await model.predict(image, false);
   prediction.sort((a, b) => b.probability - a.probability);
@@ -48,36 +51,28 @@ async function predict(image) {
   showResult(top.className);
 }
 
-function hideDropZone() {
-  const dropZone = document.getElementById("dropZone");
-  const guideText = document.querySelector("p");
-  if (dropZone) dropZone.style.display = "none";
-  if (guideText) guideText.style.display = "none";
+// 말씀 출력
+function getRandomVerse(category) {
+  const verses = versesByCategory[category];
+  if (!verses || verses.length === 0) return "해당 범주의 말씀 없음";
+  const randomIndex = Math.floor(Math.random() * verses.length);
+  return verses[randomIndex].text;
 }
 
-// ✅ 모델 및 로직 초기화
-async function init() {
-  const modelURL = TM_MODEL_URL + "model.json";
-  const metadataURL = TM_MODEL_URL + "metadata.json";
+function showResult(predictedClassName) {
+  const verseEl = document.getElementById("verse");
+  const category = classToCategoryMap[predictedClassName];
+  if (!verseEl) return;
 
-  model = await tmImage.load(modelURL, metadataURL);
-  maxPredictions = model.getTotalClasses();
-
-  console.log("✅ 모델 로딩 완료. 총 클래스 수:", maxPredictions);
-
-  const savedImage = localStorage.getItem("uploadedImage");
-  const imageElement = document.getElementById("preview");
-
-  if (savedImage && imageElement) {
-    imageElement.onload = async function () {
-      hideDropZone();
-      await predict(imageElement);
-    };
-    imageElement.src = savedImage;
+  if (!category) {
+    verseEl.innerText = "❌ 범주 매핑 없음";
+    return;
   }
+  const verseText = getRandomVerse(category);
+  verseEl.innerText = verseText;
 }
 
-// ✅ DOM 준비 후 실행
+// 초기 로딩 이벤트
 document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("imageUpload");
   const imageElement = document.getElementById("preview");
@@ -100,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const dropZone = document.getElementById("dropZone");
+
   dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropZone.style.backgroundColor = "#eef";
@@ -129,6 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
-
-  init(); // ✅ DOM이 완전히 준비된 후 init 실행
 });
+
+function hideDropZone() {
+  const dropZone = document.getElementById("dropZone");
+  const guideText = document.querySelector("p");
+  if (dropZone) dropZone.style.display = "none";
+  if (guideText) guideText.style.display = "none";
+}
+
+init();
