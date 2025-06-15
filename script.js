@@ -25,7 +25,6 @@ async function init() {
 
   console.log("✅ 모델 로딩 완료. 총 클래스 수:", maxPredictions);
 
-  // localStorage에 저장된 이미지 불러오기
   const savedImage = localStorage.getItem("uploadedImage");
   if (savedImage) {
     const imageElement = document.getElementById("preview");
@@ -44,11 +43,21 @@ async function predict(image) {
   const top = prediction[0];
 
   const resultEl = document.getElementById("result");
+  const verseEl = document.getElementById("verse");
+
   if (resultEl) {
     resultEl.innerText = `👤 성경인물: ${top.className}\n✅ 닮은정도: ${(top.probability * 100).toFixed(2)}%`;
   }
 
-  showResult(top.className);
+  const category = classToCategoryMap[top.className];
+  if (verseEl) {
+    if (!category) {
+      verseEl.innerText = "❌ 범주 매핑 없음";
+    } else {
+      const verseText = getRandomVerse(category);
+      verseEl.innerText = verseText;
+    }
+  }
 }
 
 // 말씀 출력
@@ -59,17 +68,20 @@ function getRandomVerse(category) {
   return verses[randomIndex].text;
 }
 
-function showResult(predictedClassName) {
-  const verseEl = document.getElementById("verse");
-  const category = classToCategoryMap[predictedClassName];
-  if (!verseEl) return;
+// 초기화 함수
+function resetImage() {
+  localStorage.removeItem("uploadedImage");
+  const preview = document.getElementById("preview");
+  const result = document.getElementById("result");
+  const verse = document.getElementById("verse");
+  const dropZone = document.getElementById("dropZone");
+  const guideText = document.querySelector("p");
 
-  if (!category) {
-    verseEl.innerText = "❌ 범주 매핑 없음";
-    return;
-  }
-  const verseText = getRandomVerse(category);
-  verseEl.innerText = verseText;
+  if (preview) preview.src = "";
+  if (result) result.innerText = "예측 결과가 여기에 표시됩니다";
+  if (verse) verse.innerText = "성경 말씀이 여기에 표시됩니다";
+  if (dropZone) dropZone.style.display = "block";
+  if (guideText) guideText.style.display = "block";
 }
 
 // 초기 로딩 이벤트
@@ -125,6 +137,20 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
+
+  // 초기화 버튼 연결
+  const resetBtn = document.createElement("button");
+  resetBtn.innerText = "🔄 초기화";
+  resetBtn.style.marginTop = "10px";
+  resetBtn.style.padding = "8px 16px";
+  resetBtn.style.backgroundColor = "#f44336";
+  resetBtn.style.color = "white";
+  resetBtn.style.border = "none";
+  resetBtn.style.borderRadius = "8px";
+  resetBtn.style.cursor = "pointer";
+  resetBtn.onclick = resetImage;
+
+  document.body.insertBefore(resetBtn, document.getElementById("disqus_thread"));
 });
 
 function hideDropZone() {
