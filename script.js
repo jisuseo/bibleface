@@ -15,42 +15,6 @@ const classToCategoryMap = {
   "다니엘": "감사/기쁨", "에스더": "감사/기쁨"
 };
 
-// 모델 초기화
-async function init() {
-  const modelURL = TM_MODEL_URL + "model.json";
-  const metadataURL = TM_MODEL_URL + "metadata.json";
-
-  model = await tmImage.load(modelURL, metadataURL);
-  maxPredictions = model.getTotalClasses();
-
-  console.log("✅ 모델 로딩 완료. 총 클래스 수:", maxPredictions);
-
-  // localStorage에 저장된 이미지 불러오기
-  const savedImage = localStorage.getItem("uploadedImage");
-  if (savedImage) {
-    const imageElement = document.getElementById("preview");
-    imageElement.onload = async function () {
-      hideDropZone();
-      await predict(imageElement);
-    };
-    imageElement.src = savedImage;
-  }
-}
-
-// 이미지 예측
-async function predict(image) {
-  const prediction = await model.predict(image, false);
-
-  prediction.sort((a, b) => b.probability - a.probability);
-  const top = prediction[0];
-
-  document.getElementById("result").innerText =
-    `👤 성경인물: ${top.className}\n✅ 닮은정도: ${(top.probability * 100).toFixed(2)}%`;
-
-  showResult(top.className);
-}
-
-// 말씀 출력
 function getRandomVerse(category) {
   const verses = versesByCategory[category];
   if (!verses || verses.length === 0) return "해당 범주의 말씀 없음";
@@ -60,20 +24,64 @@ function getRandomVerse(category) {
 
 function showResult(predictedClassName) {
   const category = classToCategoryMap[predictedClassName];
+  const verseEl = document.getElementById("verse");
+
   if (!category) {
-    document.getElementById("verse").innerText = "❌ 범주 매핑 없음";
+    if (verseEl) verseEl.innerText = "❌ 범주 매핑 없음";
     return;
   }
+
   const verseText = getRandomVerse(category);
-  document.getElementById("verse").innerText = verseText;
+  if (verseEl) verseEl.innerText = verseText;
 }
 
-// 초기 로딩 이벤트
+async function predict(image) {
+  const prediction = await model.predict(image, false);
+  prediction.sort((a, b) => b.probability - a.probability);
+  const top = prediction[0];
+
+  const resultEl = document.getElementById("result");
+  if (resultEl) {
+    resultEl.innerText = `👤 성경인물: ${top.className}\n✅ 닮은정도: ${(top.probability * 100).toFixed(2)}%`;
+  }
+
+  showResult(top.className);
+}
+
+function hideDropZone() {
+  const dropZone = document.getElementById("dropZone");
+  const guideText = document.querySelector("p");
+  if (dropZone) dropZone.style.display = "none";
+  if (guideText) guideText.style.display = "none";
+}
+
+// ✅ 모델 및 로직 초기화
+async function init() {
+  const modelURL = TM_MODEL_URL + "model.json";
+  const metadataURL = TM_MODEL_URL + "metadata.json";
+
+  model = await tmImage.load(modelURL, metadataURL);
+  maxPredictions = model.getTotalClasses();
+
+  console.log("✅ 모델 로딩 완료. 총 클래스 수:", maxPredictions);
+
+  const savedImage = localStorage.getItem("uploadedImage");
+  const imageElement = document.getElementById("preview");
+
+  if (savedImage && imageElement) {
+    imageElement.onload = async function () {
+      hideDropZone();
+      await predict(imageElement);
+    };
+    imageElement.src = savedImage;
+  }
+}
+
+// ✅ DOM 준비 후 실행
 document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.getElementById("imageUpload");
   const imageElement = document.getElementById("preview");
 
-  // 📂 일반 파일 업로드
   imageInput.addEventListener("change", async function (event) {
     const file = event.target.files[0];
     if (file) {
@@ -85,15 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
           await predict(imageElement);
         };
         imageElement.src = base64Image;
-        localStorage.setItem("uploadedImage", base64Image); // 🟢 저장
+        localStorage.setItem("uploadedImage", base64Image);
       };
       reader.readAsDataURL(file);
     }
   });
 
-  // 📥 드래그 앤 드롭
   const dropZone = document.getElementById("dropZone");
-
   dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropZone.style.backgroundColor = "#eef";
@@ -118,20 +124,11 @@ document.addEventListener("DOMContentLoaded", () => {
           await predict(imageElement);
         };
         imageElement.src = base64Image;
-        localStorage.setItem("uploadedImage", base64Image); // 🟢 저장
+        localStorage.setItem("uploadedImage", base64Image);
       };
       reader.readAsDataURL(file);
     }
   });
+
+  init(); // ✅ DOM이 완전히 준비된 후 init 실행
 });
-
-// 👇 드래그 박스와 안내문 숨기기
-function hideDropZone() {
-  const dropZone = document.getElementById("dropZone");
-  const guideText = document.querySelector("p");
-  if (dropZone) dropZone.style.display = "none";
-  if (guideText) guideText.style.display = "none";
-}
-
-// 최초 모델 초기화
-init();
