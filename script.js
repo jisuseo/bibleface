@@ -39,32 +39,17 @@ const classToCategoryMap = {
   "다니엘": "감사/기쁨", "에스더": "감사/기쁨"
 };
 
-// 모델 초기화
-async function init() {
-  const modelURL = TM_MODEL_URL + "model.json";
-  const metadataURL = TM_MODEL_URL + "metadata.json";
-
-  model = await tmImage.load(modelURL, metadataURL);
-  maxPredictions = model.getTotalClasses();
-
-  console.log("✅ 모델 로딩 완료. 총 클래스 수:", maxPredictions);
-
-  // localStorage에 저장된 이미지 불러오기
-  const savedImage = localStorage.getItem("uploadedImage");
-  if (savedImage) {
-    const imageElement = document.getElementById("preview");
-    imageElement.onload = async function () {
-      hideDropZone();
-      await predict(imageElement);
-    };
-    imageElement.src = savedImage;
-  }
+// 말씀 출력
+function getRandomVerse(category) {
+  const verses = versesByCategory[category];
+  if (!verses || verses.length === 0) return "해당 범주의 말씀이 없습니다.";
+  const randomIndex = Math.floor(Math.random() * verses.length);
+  return verses[randomIndex].text;
 }
 
 // 이미지 예측
 async function predict(image) {
   const prediction = await model.predict(image, false);
-
   prediction.sort((a, b) => b.probability - a.probability);
   const top = prediction[0];
 
@@ -74,26 +59,45 @@ async function predict(image) {
   const category = classToCategoryMap[name];
   const verse = getRandomVerse(category);
 
+  // 결과 출력
   document.getElementById("resultName").innerText = name;
   document.getElementById("resultDesc").innerText = description;
   document.getElementById("resultPercent").innerText = "닮은 확률: " + percent;
   document.getElementById("verse").innerText = verse;
 }
 
-// 말씀 출력
-function getRandomVerse(category) {
-  const verses = versesByCategory[category];
-  if (!verses || verses.length === 0) return "해당 범주의 말씀 없습니다다";
-  const randomIndex = Math.floor(Math.random() * verses.length);
-  return verses[randomIndex].text;
+// 드롭존 숨기기
+function hideDropZone() {
+  const dropZone = document.getElementById("dropZone");
+  const guideText = document.querySelector("p");
+  if (dropZone) dropZone.style.display = "none";
+  if (guideText) guideText.style.display = "none";
 }
 
-// 초기 로딩 이벤트
-document.addEventListener("DOMContentLoaded", () => {
+// DOM이 로드된 후 실행
+document.addEventListener("DOMContentLoaded", async () => {
   const imageInput = document.getElementById("imageUpload");
   const imageElement = document.getElementById("preview");
+  const dropZone = document.getElementById("dropZone");
 
-  // 📂 일반 파일 업로드
+  // ✅ 모델 초기화
+  const modelURL = TM_MODEL_URL + "model.json";
+  const metadataURL = TM_MODEL_URL + "metadata.json";
+  model = await tmImage.load(modelURL, metadataURL);
+  maxPredictions = model.getTotalClasses();
+  console.log("✅ 모델 로딩 완료");
+
+  // 이전 이미지 불러오기
+  const savedImage = localStorage.getItem("uploadedImage");
+  if (savedImage) {
+    imageElement.onload = async function () {
+      hideDropZone();
+      await predict(imageElement);
+    };
+    imageElement.src = savedImage;
+  }
+
+  // 파일 업로드
   imageInput.addEventListener("change", async function (event) {
     const file = event.target.files[0];
     if (file) {
@@ -105,15 +109,13 @@ document.addEventListener("DOMContentLoaded", () => {
           await predict(imageElement);
         };
         imageElement.src = base64Image;
-        localStorage.setItem("uploadedImage", base64Image); // 🟢 저장
+        localStorage.setItem("uploadedImage", base64Image);
       };
       reader.readAsDataURL(file);
     }
   });
 
-  // 📥 드래그 앤 드롭
-  const dropZone = document.getElementById("dropZone");
-
+  // 드래그 앤 드롭
   dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropZone.style.backgroundColor = "#eef";
@@ -127,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
   dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
     dropZone.style.backgroundColor = "";
-
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
@@ -138,20 +139,9 @@ document.addEventListener("DOMContentLoaded", () => {
           await predict(imageElement);
         };
         imageElement.src = base64Image;
-        localStorage.setItem("uploadedImage", base64Image); // 🟢 저장
+        localStorage.setItem("uploadedImage", base64Image);
       };
       reader.readAsDataURL(file);
     }
   });
 });
-
-// 👇 드래그 박스와 안내문 숨기기
-function hideDropZone() {
-  const dropZone = document.getElementById("dropZone");
-  const guideText = document.querySelector("p");
-  if (dropZone) dropZone.style.display = "none";
-  if (guideText) guideText.style.display = "none";
-}
-
-// 최초 모델 초기화
-init();
