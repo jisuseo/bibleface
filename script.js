@@ -24,6 +24,17 @@ async function init() {
   maxPredictions = model.getTotalClasses();
 
   console.log("✅ 모델 로딩 완료. 총 클래스 수:", maxPredictions);
+
+  // localStorage에 저장된 이미지 불러오기
+  const savedImage = localStorage.getItem("uploadedImage");
+  if (savedImage) {
+    const imageElement = document.getElementById("preview");
+    imageElement.onload = async function () {
+      hideDropZone();
+      await predict(imageElement);
+    };
+    imageElement.src = savedImage;
+  }
 }
 
 // 이미지 예측
@@ -68,11 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = function (e) {
+        const base64Image = e.target.result;
         imageElement.onload = async function () {
           hideDropZone();
           await predict(imageElement);
         };
-        imageElement.src = e.target.result;
+        imageElement.src = base64Image;
+        localStorage.setItem("uploadedImage", base64Image); // 🟢 저장
       };
       reader.readAsDataURL(file);
     }
@@ -99,11 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = function (e) {
+        const base64Image = e.target.result;
         imageElement.onload = async function () {
           hideDropZone();
           await predict(imageElement);
         };
-        imageElement.src = e.target.result;
+        imageElement.src = base64Image;
+        localStorage.setItem("uploadedImage", base64Image); // 🟢 저장
       };
       reader.readAsDataURL(file);
     }
