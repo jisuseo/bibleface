@@ -2,6 +2,30 @@ const TM_MODEL_URL = "https://teachablemachine.withgoogle.com/models/BjKI68mob/"
 
 let model, maxPredictions;
 
+// 클래스명 → 설명 맵핑
+const classDescriptions = {
+  "솔로몬": "지혜로운 중재자",
+  "아비가일": "총명하고 아름다운 중재자",
+  "아브라함": "믿음의 조상",
+  "사라": "믿음의 어머니",
+  "다윗": "용기의 상징, 하나님의 사람",
+  "드보라": "담대한 여성 리더",
+  "모세": "백성을 이끈 지도자",
+  "미리암": "찬양하는 여선지자",
+  "요셉": "용서와 회복의 사람",
+  "한나": "기도와 헌신의 여인",
+  "이삭": "순종의 사람",
+  "리브가": "선한 마음의 중재자",
+  "사무엘": "하나님의 음성을 들은 자",
+  "마리아": "순종의 모범",
+  "바울": "복음을 위한 평화의 사도",
+  "마르다": "섬김과 실천의 사람",
+  "욥": "고난 속 인내의 본",
+  "나오미": "돌봄과 지혜의 여인",
+  "다니엘": "믿음과 감사의 본",
+  "에스더": "용기와 순종의 여왕"
+};
+
 const classToCategoryMap = {
   "솔로몬": "지혜/분별", "아비가일": "지혜/분별",
   "아브라함": "믿음/신뢰", "사라": "믿음/신뢰",
@@ -53,7 +77,7 @@ async function predict(image) {
 // 말씀 출력
 function getRandomVerse(category) {
   const verses = versesByCategory[category];
-  if (!verses || verses.length === 0) return "해당 범주의 말씀 없음";
+  if (!verses || verses.length === 0) return "해당 범주의 말씀 없습니다다";
   const randomIndex = Math.floor(Math.random() * verses.length);
   return verses[randomIndex].text;
 }
