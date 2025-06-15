@@ -45,7 +45,7 @@ async function predict(image) {
   const top = prediction[0];
 
   document.getElementById("result").innerText =
-    `👤 스타일: ${top.className}\n✅ 확률: ${(top.probability * 100).toFixed(2)}%`;
+    `👤 성경인물: ${top.className}\n✅ 닮은정도: ${(top.probability * 100).toFixed(2)}%`;
 
   showResult(top.className);
 }
