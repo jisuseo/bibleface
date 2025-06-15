@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI 성경 인물 스타일 테스트</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.20.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  
+  <script src="verses.js"></script>
+  <script src="script.js" defer></script>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 50px;
+      background-color: #fff;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    #preview {
+        display: block;
+        margin: 0 auto;
+        margin-top: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    #result, #verse {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      white-space: pre-line;
+      text-align: center;
+    }
+
+    #captureArea {
+      display: inline-block;
+      padding: 20px;
+      margin-top: 20px;
+      background: #f5f5f5;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #downloadBtn {
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      background-color: #4caf50;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+    }
+
+    #dropZone {
+      width: 320px;
+      height: 180px;
+      margin: 20px auto;
+      border: 2px dashed #ccc;
+      line-height: 180px;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+
+ 
+</head>
+
+<body>
+  <h2>📸 당신의 얼굴로 성경 인물 스타일을 예측해보세요</h2>
+  <input type="file" id="imageUpload" accept="image/*" />
+  <p>또는 이미지를 아래 박스에 끌어다 놓으세요 👇</p>
+  <div id="dropZone">이미지 드래그 앤 드롭</div>
+  
+  <br><br>
+
+  <div id="captureArea">
+    <img id="preview" width="300" />
+    <h3 id="result">예측 결과가 여기에 표시됩니다</h3>
+    <div id="verse"></div>
+  </div>
+
+  <button id="downloadBtn">📥 이미지로 저장</button>
+<div id="disqus_thread"></div>
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://isuseo.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script id="dsq-count-scr" src="//isuseo.disqus.com/count.js" async></script>
+<!-- ✅ script.js는 맨 마지막에 삽입 -->
+  <script src="script.js"></script>
+</body>
+</html>
