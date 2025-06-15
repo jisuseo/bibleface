@@ -159,5 +159,6 @@ function hideDropZone() {
   if (dropZone) dropZone.style.display = "none";
   if (guideText) guideText.style.display = "none";
 }
+window.resetImage = resetImage;
 
 init();
