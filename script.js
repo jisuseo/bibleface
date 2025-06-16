@@ -103,15 +103,15 @@ function resetImage() {
   localStorage.removeItem("uploadedImage");
   const preview = document.getElementById("preview");
   const result = document.getElementById("result");
-  const description = document.getElementById("description");
   const verse = document.getElementById("verse");
+  const description = document.getElementById("description");
   const dropZone = document.getElementById("dropZone");
   const guideText = document.querySelector("p");
 
   if (preview) preview.src = "";
   if (result) result.innerText = "예측 결과가 여기에 표시됩니다";
-  if (description) description.innerText = "성경 인물 설명이 여기에 표시됩니다";
   if (verse) verse.innerText = "성경 말씀이 여기에 표시됩니다";
+  if (description) description.innerText = "성경 인물 설명이 여기에 표시됩니다";
   if (dropZone) dropZone.style.display = "block";
   if (guideText) guideText.style.display = "block";
 }
