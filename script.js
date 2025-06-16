@@ -108,16 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const dropZone = document.getElementById("dropZone");
 
-  dropZone.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropZone.style.backgroundColor = "#eef";
-  });
-
-  dropZone.addEventListener("dragleave", (e) => {
-    e.preventDefault();
-    dropZone.style.backgroundColor = "";
-  });
-
   dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
     dropZone.style.backgroundColor = "";
@@ -137,16 +127,16 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
-
-
-function hideDropZone() {
-    const dropZone = document.getElementById("dropZone");
-    const guideText = document.querySelector("p");
-    if (dropZone) dropZone.style.display = "none";
-    if (guideText) guideText.style.display = "none";
-  }
-
-  window.resetImage = resetImage;
-
-  init();
 });
+
+// ✅ DOMContentLoaded 밖에 있어야 할 함수 및 호출
+function hideDropZone() {
+  const dropZone = document.getElementById("dropZone");
+  const guideText = document.querySelector("p");
+  if (dropZone) dropZone.style.display = "none";
+  if (guideText) guideText.style.display = "none";
+}
+
+window.resetImage = resetImage;
+
+init();
