@@ -137,7 +137,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const dropZone = document.getElementById("dropZone");
+  dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropZone.style.backgroundColor = "#f0f0f0"; // 선택 사항
+});
 
+dropZone.addEventListener("dragleave", () => {
+  dropZone.style.backgroundColor = ""; // 선택 사항: 다시 원래 색상
+});
   dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
     dropZone.style.backgroundColor = "";
