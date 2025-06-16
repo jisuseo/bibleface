@@ -171,7 +171,19 @@
     }
   }
 </script>
-
+  
+<!-- ✅ 이미지로 저장 영역 -->
+<script>
+  document.getElementById("downloadBtn").addEventListener("click", function () {
+    const target = document.getElementById("captureArea");
+    html2canvas(target).then(function (canvas) {
+      const link = document.createElement("a");
+      link.download = "bibleface_result.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  });
+</script>
 
   <!-- ✅ Disqus 댓글 영역 -->
   <div id="disqus_thread"></div>
