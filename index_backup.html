@@ -84,16 +84,24 @@
       text-align: center;
     }
 
-    #downloadBtn {
-      margin: 20px auto;
+    #downloadBtn, #resetBtn {
+      margin: 10px auto;
       padding: 10px 20px;
       font-size: 1rem;
       border: none;
-      background-color: #4caf50;
-      color: white;
       border-radius: 8px;
       cursor: pointer;
       display: block;
+    }
+
+    #downloadBtn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    #resetBtn {
+      background-color: #f44336;
+      color: white;
     }
 
     #disqus_thread {
@@ -118,7 +126,7 @@
         font-size: 1.2rem;
       }
 
-      #downloadBtn {
+      #downloadBtn, #resetBtn {
         width: 90%;
       }
     }
@@ -134,10 +142,12 @@
   <div id="captureArea">
     <img id="preview" width="300" />
     <h3 id="result">예측 결과가 여기에 표시됩니다</h3>
-    <div id="verse"></div>
+    <div id="verse">성경 말씀이 여기에 표시됩니다</div>
   </div>
 
   <button id="downloadBtn">📥 이미지로 저장</button>
+  <button onclick="resetImage()">🔄 이미지 초기화</button>
+
 
   <!-- ✅ Disqus 댓글 영역 -->
   <div id="disqus_thread"></div>
