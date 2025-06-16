@@ -140,11 +140,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function hideDropZone() {
-  const dropZone = document.getElementById("dropZone");
-  const guideText = document.querySelector("p");
-  if (dropZone) dropZone.style.display = "none";
-  if (guideText) guideText.style.display = "none";
-}
-window.resetImage = resetImage;
+    const dropZone = document.getElementById("dropZone");
+    const guideText = document.querySelector("p");
+    if (dropZone) dropZone.style.display = "none";
+    if (guideText) guideText.style.display = "none";
+  }
 
-init();
+  window.resetImage = resetImage;
+
+  init();
+});
