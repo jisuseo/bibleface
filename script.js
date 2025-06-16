@@ -110,8 +110,8 @@ function resetImage() {
 
   if (preview) preview.src = "";
   if (result) result.innerText = "예측 결과가 여기에 표시됩니다";
-  if (verse) verse.innerText = "성경 말씀이 여기에 표시됩니다";
-  if (description) description.innerText = "성경 인물 설명이 여기에 표시됩니다";
+  if (verse) verse.innerText = "";
+  if (description) description.innerText = "";
   if (dropZone) dropZone.style.display = "block";
   if (guideText) guideText.style.display = "block";
 }
