@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href = "/favicon.ico" type="image/x-icon">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BibleFace - AI 성경 인물 스타일 테스트</title>
@@ -149,6 +151,26 @@
 
   <button id="downloadBtn">📥 이미지로 저장</button>
   <button onclick="resetImage()">🔄 이미지 초기화</button>
+
+  <button onclick="share()" style="background:#007bff;color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;margin-top:10px;">
+  🔗 공유하기
+  </button>
+  <!-- ✅ 공유버튼 영역 -->
+  <script>
+  function share() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'BibleFace - AI 성경 인물 테스트',
+        text: 'AI가 분석한 나의 성경 인물 스타일은?! 지금 확인해보세요!',
+        url: window.location.href
+      })
+      .then(() => console.log('✅ 공유 성공'))
+      .catch((error) => console.log('❌ 공유 실패:', error));
+    } else {
+      alert('이 브라우저에서는 공유 기능이 지원되지 않습니다 😢');
+    }
+  }
+</script>
 
 
   <!-- ✅ Disqus 댓글 영역 -->
