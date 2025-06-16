@@ -67,6 +67,9 @@ async function predict(image) {
 
   const resultEl = document.getElementById("result");
   const verseEl = document.getElementById("verse");
+  const descriptionEl = document.getElementById("description");
+
+  
 
   if (resultEl) {
     resultEl.innerText = `👤 성경인물: ${top.className}\n✅ 닮은정도: ${(top.probability * 100).toFixed(2)}%`;
@@ -80,6 +83,10 @@ async function predict(image) {
       const verseText = getRandomVerse(category);
       verseEl.innerText = verseText;
     }
+  }
+  if (descriptionEl) {
+  const desc = characterDescriptions[top.className] || "이 인물에 대한 설명이 없습니다.";
+  descriptionEl.innerText = `📖 설명: ${desc}`;
   }
 }
 
