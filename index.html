@@ -39,6 +39,19 @@
     #imageUpload {
       margin-top: 15px;
     }
+    .upload-btn {
+      background-color: #ff9800;
+      color: white;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
 
     #dropZone {
       width: 100%;
@@ -172,8 +185,10 @@
   </div>
 
   <h2>📸 당신의 얼굴로 성경 인물 스타일을 예측해보세요</h2>
-  <input type="file" id="imageUpload" accept="image/*" />
-  <p>또는 이미지를 아래 박스에 끌어다 놓으세요 👇</p>
+  <label for="imageUpload" class="upload-btn">📂 이미지 선택하기</label>
+  <input type="file" id="imageUpload" accept="image/*" style="display:none;" />  <p>또는 이미지를 아래 박스에 끌어다 놓으세요 👇</p>
+
+  
   <div id="dropZone">이미지 드래그 앤 드롭</div>
 
   <div id="captureArea">
