@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="icon" href = "/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BibleFace - AI 성경 인물 스타일 테스트</title>
@@ -132,14 +132,21 @@
         width: 90%;
       }
     }
+
+    /* ✅ 오른쪽 광고에 가려지지 않게 여백 확보 */
+    @media (min-width: 1200px) {
+      body {
+        padding-right: 180px;
+      }
+    }
   </style>
 </head>
 
 <body>
-<!-- ✅ 쿠팡 광고 스크립트는 단 1번만 -->
+  <!-- ✅ 쿠팡 광고 스크립트 -->
   <script src="https://ads-partners.coupang.com/g.js"></script>
 
-  <!-- ✅ 상단 320x150 광고 -->
+  <!-- ✅ 상단 광고들 -->
   <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px;">
     <script>
       new PartnersCoupang.G({
@@ -147,13 +154,11 @@
         template: "carousel",
         trackingCode: "AF9706200",
         width: "320",
-        height: "150",
-        tsource: ""
+        height: "150"
       });
     </script>
   </div>
 
-  <!-- ✅ 상단 320x100 광고 -->
   <div style="width: 100%; display: flex; justify-content: center; margin-top: 20px;">
     <script>
       new PartnersCoupang.G({
@@ -161,13 +166,11 @@
         template: "carousel",
         trackingCode: "AF9706200",
         width: "320",
-        height: "100",
-        tsource: ""
+        height: "100"
       });
     </script>
   </div>
 
-	
   <h2>📸 당신의 얼굴로 성경 인물 스타일을 예측해보세요</h2>
   <input type="file" id="imageUpload" accept="image/*" />
   <p>또는 이미지를 아래 박스에 끌어다 놓으세요 👇</p>
@@ -178,46 +181,41 @@
     <h3 id="result">예측 결과가 여기에 표시됩니다</h3>
     <div id="description"></div>
     <div id="verse"></div>
-    
   </div>
 
   <button id="downloadBtn">📥 이미지로 저장</button>
   <button onclick="resetImage()">🔄 이미지 초기화</button>
 
   <button onclick="share()" style="background:#007bff;color:white;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;margin-top:10px;">
-  🔗 공유하기
+    🔗 공유하기
   </button>
-  <!-- ✅ 공유버튼 영역 -->
-  <script>
-  function share() {
-    if (navigator.share) {
-      navigator.share({
-        title: 'BibleFace - AI 성경 인물 테스트',
-        text: 'AI가 분석한 나의 성경 인물 스타일은?! 지금 확인해보세요!',
-        url: window.location.href
-      })
-      .then(() => console.log('✅ 공유 성공'))
-      .catch((error) => console.log('❌ 공유 실패:', error));
-    } else {
-      alert('이 브라우저에서는 공유 기능이 지원되지 않습니다 😢');
-    }
-  }
-</script>
-  
-<!-- ✅ 이미지로 저장 영역 -->
-<script>
-  document.getElementById("downloadBtn").addEventListener("click", function () {
-    const target = document.getElementById("captureArea");
-    html2canvas(target).then(function (canvas) {
-      const link = document.createElement("a");
-      link.download = "bibleface_result.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    });
-  });
-</script>
 
-  <!-- ✅ Disqus 댓글 영역 -->
+  <script>
+    function share() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'BibleFace - AI 성경 인물 테스트',
+          text: 'AI가 분석한 나의 성경 인물 스타일은?! 지금 확인해보세요!',
+          url: window.location.href
+        })
+        .then(() => console.log('✅ 공유 성공'))
+        .catch((error) => console.log('❌ 공유 실패:', error));
+      } else {
+        alert('이 브라우저에서는 공유 기능이 지원되지 않습니다 😢');
+      }
+    }
+
+    document.getElementById("downloadBtn").addEventListener("click", function () {
+      const target = document.getElementById("captureArea");
+      html2canvas(target).then(function (canvas) {
+        const link = document.createElement("a");
+        link.download = "bibleface_result.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    });
+  </script>
+
   <div id="disqus_thread"></div>
   <script>
     (function() {
@@ -232,59 +230,58 @@
     <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
   </noscript>
 
+  <!-- ✅ 하단 광고 -->
+  <script>
+    new PartnersCoupang.G({
+      id: 878339,
+      template: "carousel",
+      trackingCode: "AF9706200",
+      width: "320",
+      height: "100"
+    });
+  </script>
 
-	
-<script>
-	new PartnersCoupang.G({"id":878339,"template":"carousel","trackingCode":"AF9706200","width":"320","height":"100","tsource":""});
-</script>
-	
-<!-- ✅ 하단 중앙 카카오 광고 (320x100) -->
-<div style="width: 100%; display: flex; justify-content: center; margin: 40px 0;">
-  <ins class="kakao_ad_area"
-    style="display:inline-block; width:320px; height:100px;"
-    data-ad-unit="DAN-cyYlEU2EFnVztTep"
-    data-ad-width="320"
-    data-ad-height="100"></ins>
-</div>
+  <div style="width: 100%; display: flex; justify-content: center; margin: 40px 0;">
+    <ins class="kakao_ad_area"
+      style="display:inline-block; width:320px; height:100px;"
+      data-ad-unit="DAN-cyYlEU2EFnVztTep"
+      data-ad-width="320"
+      data-ad-height="100"></ins>
+  </div>
 
-	
-<!-- ✅ 반응형 세로형 카카오 애드핏 광고 -->
-<style>
-  .kakao-vertical-ad {
-    display: none;
-  }
-
-  /* PC: 오른쪽 고정 광고 */
-  @media (min-width: 769px) {
-    .kakao-vertical-ad.desktop {
-      display: block;
-      position: fixed;
-      top: 120px;
-      right: 10px;
-      z-index: 1000;
+  <!-- ✅ 반응형 우측 고정 광고 -->
+  <style>
+    .kakao-vertical-ad {
+      display: none;
     }
-  }
 
-  /* 모바일: 본문 하단 중앙 정렬 광고 */
-  @media (max-width: 768px) {
-    .kakao-vertical-ad.mobile {
-      display: flex;
-      justify-content: center;
-      margin: 30px 0;
+    @media (min-width: 769px) {
+      .kakao-vertical-ad.desktop {
+        display: block;
+        position: fixed;
+        top: 120px;
+        right: 10px;
+        z-index: 1000;
+      }
     }
-  }
-</style>
 
-<!-- ✅ PC용: 오른쪽 고정 -->
-<div class="kakao-vertical-ad desktop">
-  <ins class="kakao_ad_area"
-    style="display:inline-block;"
-    data-ad-unit="DAN-aagilXS0gKnmyvHB"
-    data-ad-width="160"
-    data-ad-height="600"></ins>
-</div>
+    @media (max-width: 768px) {
+      .kakao-vertical-ad.mobile {
+        display: flex;
+        justify-content: center;
+        margin: 30px 0;
+      }
+    }
+  </style>
 
-<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+  <div class="kakao-vertical-ad desktop">
+    <ins class="kakao_ad_area"
+      style="display:inline-block;"
+      data-ad-unit="DAN-aagilXS0gKnmyvHB"
+      data-ad-width="160"
+      data-ad-height="600"></ins>
+  </div>
+
+  <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 </body>
-
 </html>
