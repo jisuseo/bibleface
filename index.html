@@ -210,7 +210,50 @@ data-ad-width = "320"
 data-ad-height = "100"></ins>
 	
 </div>
+<!-- ✅ 반응형 세로형 카카오 애드핏 광고 -->
+<style>
+  .kakao-vertical-ad {
+    display: none;
+  }
 
+  /* PC: 오른쪽 고정 광고 */
+  @media (min-width: 769px) {
+    .kakao-vertical-ad.desktop {
+      display: block;
+      position: fixed;
+      top: 120px;
+      right: 10px;
+      z-index: 1000;
+    }
+  }
+
+  /* 모바일: 본문 하단 중앙 정렬 광고 */
+  @media (max-width: 768px) {
+    .kakao-vertical-ad.mobile {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0;
+    }
+  }
+</style>
+
+<!-- ✅ PC용: 오른쪽 고정 -->
+<div class="kakao-vertical-ad desktop">
+  <ins class="kakao_ad_area"
+    style="display:inline-block;"
+    data-ad-unit="DAN-aagilXS0gKnmyvHB"
+    data-ad-width="160"
+    data-ad-height="600"></ins>
+</div>
+
+<!-- ✅ 모바일용: 본문 아래 자연스러운 위치 -->
+<div class="kakao-vertical-ad mobile">
+  <ins class="kakao_ad_area"
+    style="display:inline-block;"
+    data-ad-unit="DAN-aagilXS0gKnmyvHB"
+    data-ad-width="160"
+    data-ad-height="600"></ins>
+</div>
 <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 </body>
 
