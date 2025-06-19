@@ -75,20 +75,23 @@ async function predict(image) {
     resultEl.innerText = `👤 성경인물: ${top.className}\n✅ 닮은정도: ${(top.probability * 100).toFixed(2)}%`;
   }
 
-  const category = classToCategoryMap[top.className];
-  if (verseEl) {
-    if (!category) {
-      verseEl.innerText = "❌ 범주 매핑 없음";
-    } else {
-      const verseText = getRandomVerse(category);
-      verseEl.innerText = verseText;
-    }
-  }
-  if (descriptionEl) {
-  const desc = characterDescriptions[top.className] || "이 인물에 대한 설명이 없습니다.";
-  descriptionEl.innerText = `📖 설명: ${desc}`;
+  const cleanName = top.className.replace(/\(.*\)/, "").trim(); // 괄호 제거
+const category = classToCategoryMap[top.className] || classToCategoryMap[cleanName];
+const desc = characterDescriptions[top.className] || characterDescriptions[cleanName] || "이 인물에 대한 설명이 없습니다.";
+
+if (verseEl) {
+  if (!category) {
+    verseEl.innerText = "❌ 범주 매핑 없음";
+  } else {
+    const verseText = getRandomVerse(category);
+    verseEl.innerText = verseText;
   }
 }
+
+if (descriptionEl) {
+  descriptionEl.innerText = `📖 설명: ${desc}`;
+}
+
 
 // 말씀 출력
 function getRandomVerse(category) {
